@@ -44,7 +44,7 @@ const pAequorFactory = (number, array) => {
       let countMatches = 0;
       let percentMatch = 0;
       let i = 0;
-      const totalCount = this.dna.length;
+      let totalCount = this.dna.length;
       for (const nucleotide of this.dna) {
         if (nucleotide === pastData[i]) {
           countMatches++;
@@ -58,19 +58,62 @@ const pAequorFactory = (number, array) => {
       console.log(`Specimen #1 and specimen #2 have ${percentMatch}% DNA in common.`);
       // If sequence is in the same location and identical its a match
       // print the percentage in common
+    },
+    willLikelySurvive() {
+      // Likelier chance to survice if atleast 60% C's or G's.
+      // return true if the objects .dna contains atleast 60% C's or G's
+      // Otherwise return false
+      let countCG = 0;
+      totalCount = this.dna.length;
+      for (const letters of this.dna) {
+        if (letters === 'C' || letters === 'G') {
+          countCG++;
+        }
+      }
+      if (((countCG / totalCount) * 100) >= 60) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
      
   }
 }
+
+// Create 30 instances of pAqeuor that can survive
+const canSurvive = [];
+let i = 0;
+do {
+  const createStrain = pAequorFactory(i, mockUpStrand());
+  if (createStrain.willLikelySurvive() === true) {
+    canSurvive.push(createStrain);
+    i++;
+  }
+  else {
+    continue
+  }
+
+}
+while (canSurvive.length < 30)
+console.log(canSurvive)
+
+
+
+
+
 // Test functions
 //console.log(pAequorFactory(3, mockUpStrand()));
+
 // Test mutate() method works
 //console.log(pAequorFactory(3, mockUpStrand()).mutate())
-console.log(pAequorFactory(3, ['A', 'A', 'A' , 'A', 'A','A', 'A', 'A' , 'A', 'A','A', 'A', 'A' , 'A', 'A']).mutate())
+//console.log(pAequorFactory(3, ['A', 'A', 'A' , 'A', 'A','A', 'A', 'A' , 'A', 'A','A', 'A', 'A' , 'A', 'A']).mutate())
 
 // Test compareDNA function
-pAequorFactory(3, ['A', 'A', 'A' , 'A', 'A','A', 'A', 'A' , 'A', 'A','A', 'A', 'A' , 'A', 'A']).compareDNA(['T', 'T', 'T' , 'T', 'T','T', 'T', 'T' , 'T', 'T','T', 'T', 'T' , 'T', 'T'])
+//pAequorFactory(3, ['A', 'A', 'A' , 'A', 'A','A', 'A', 'A' , 'A', 'A','A', 'A', 'A' , 'A', 'A']).compareDNA(['T', 'T', 'T' , 'T', 'T','T', 'T', 'T' , 'T', 'T','T', 'T', 'T' , 'T', 'T'])
 
+// Test willLikelySurvive function
+console.log(pAequorFactory(3, ['C', 'G', 'G' , 'C', 'G','C', 'G', 'G' , 'C', 'A','A', 'A', 'A' , 'A', 'A']).willLikelySurvive())
 
 
 
